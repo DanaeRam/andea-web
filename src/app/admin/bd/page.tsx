@@ -7,6 +7,11 @@ export default function AdminBDPage() {
           Base de datos
         </h1>
       </div>
+                <div className="aspect-video w-full bg-black/40 grid place-items-center">
+            <p className="text-white/70 text-sm">
+              Próximamente...
+            </p>
+          </div>
 
 
 

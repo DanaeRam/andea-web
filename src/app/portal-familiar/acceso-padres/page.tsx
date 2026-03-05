@@ -67,7 +67,7 @@ export default function AccesoPadresPage() {
             <Link className="nav-link" href="/portal-familiar">
               Portal Familiar
             </Link>
-            <Link className="nav-link" href="/#fundacion">
+            <Link className="nav-link" href="/fundacion">
               Fundación
             </Link>
             <Link href="/jugar" className="btn-pill btn-glass">
@@ -94,7 +94,7 @@ export default function AccesoPadresPage() {
               Panel de progreso — {childName}
             </h1>
             <p className="mt-3 text-white/80">
-              Datos de ejemplo (inventados) para mostrar cómo se vería el dashboard.
+              Datos de ejemplo para mostrar cómo se vería el dashboard.
             </p>
           </div>
 
@@ -227,56 +227,12 @@ export default function AccesoPadresPage() {
                 ))}
               </div>
               <div className="mt-4 text-xs text-white/55">
-                Minutos jugados por día (inventado). Útil para detectar hábitos.
+                Minutos jugados por día. Útil para detectar hábitos.
               </div>
             </div>
           </div>
         </section>
 
-        {/* Strength vs Reinforce */}
-        <section className="mt-10 grid gap-6 lg:grid-cols-2">
-          <div className="card p-6">
-            <h2 className="text-xl font-semibold">Temas fuertes</h2>
-            <p className="mt-2 text-white/75">
-              Áreas donde {childName.split(" ")[0]} muestra buen desempeño.
-            </p>
-
-            <ul className="mt-5 space-y-3">
-              {strengths.map((s) => (
-                <li key={s.topic} className="rounded-xl bg-white/5 ring-1 ring-white/10 p-4">
-                  <div className="font-semibold">{s.topic}</div>
-                  <div className="mt-1 text-sm text-white/70">{s.note}</div>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="card p-6">
-            <h2 className="text-xl font-semibold">Temas a reforzar</h2>
-            <p className="mt-2 text-white/75">
-              Recomendaciones simples para la siguiente semana.
-            </p>
-
-            <ul className="mt-5 space-y-3">
-              {reinforce.map((r) => (
-                <li key={r.topic} className="rounded-xl bg-white/5 ring-1 ring-white/10 p-4">
-                  <div className="font-semibold">{r.topic}</div>
-                  <div className="mt-1 text-sm text-white/70">{r.note}</div>
-                </li>
-              ))}
-            </ul>
-
-            <div className="mt-6 rounded-xl bg-white/5 ring-1 ring-white/10 p-4">
-              <p className="text-sm text-white/80">
-                Sugerencia rápida:{" "}
-                <span className="font-semibold text-white">
-                  10–15 min diarios
-                </span>{" "}
-                con una sola sección por día, y una recompensa pequeña al terminar.
-              </p>
-            </div>
-          </div>
-        </section>
 
         <footer className="mt-16 text-sm text-white/50">
           © {new Date().getFullYear()} ANDEA
