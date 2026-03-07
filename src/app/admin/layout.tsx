@@ -41,7 +41,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </div>
 
             <p className="mt-6 text-xs text-white/55">
-              *Datos inventados (demo).
+              Datos de ejemplo (demo).
             </p>
           </aside>
 

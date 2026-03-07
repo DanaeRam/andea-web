@@ -43,8 +43,7 @@ export default function FundacionLoginPage() {
 
             <div className="mt-6 rounded-xl bg-white/5 ring-1 ring-white/10 p-4">
               <p className="text-sm text-white/75">
-                *Versión demo: el botón <span className="font-semibold text-white">Ingresar</span>{" "}
-                funciona con cualquier texto.
+                Por ahora este registro es de prueba: solo da clic en el botón.
               </p>
             </div>
           </div>

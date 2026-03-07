@@ -17,7 +17,7 @@ export default function AdminGestionPage() {
       <div className="card p-6">
         <p className="text-xs uppercase tracking-widest text-white/70">Gestión</p>
         <h1 className="mt-2 text-3xl font-semibold text-hero-title">
-          Administración de grupos y estudiantes
+          Administración de estudiantes
         </h1>
         <p className="mt-3 text-white/75">
           Da de alta estudiantes y genera códigos (demo).
@@ -39,7 +39,6 @@ export default function AdminGestionPage() {
               <label className="text-sm text-white/80">Nombre</label>
               <input
                 type="text"
-                placeholder="Nombre del estudiante"
                 className="mt-2 w-full rounded-xl bg-white/5 px-4 py-3 ring-1 ring-white/10 outline-none focus:ring-white/25"
               />
             </div>
@@ -48,7 +47,6 @@ export default function AdminGestionPage() {
               <label className="text-sm text-white/80">Edad</label>
               <input
                 type="text"
-                placeholder="9"
                 className="mt-2 w-full rounded-xl bg-white/5 px-4 py-3 ring-1 ring-white/10 outline-none focus:ring-white/25"
               />
             </div>
@@ -77,7 +75,7 @@ export default function AdminGestionPage() {
                 <span className="font-mono text-lg">{gameCode}</span>
                 <button
                   className="btn-pill btn-glass"
-                  onClick={() => setGameCode(fakeCode("GAME"))}
+                  
                 >
                   Generar
                 </button>
@@ -90,16 +88,11 @@ export default function AdminGestionPage() {
                 <span className="font-mono text-lg">{famCode}</span>
                 <button
                   className="btn-pill btn-glass"
-                  onClick={() => setFamCode(fakeCode("FAM"))}
                 >
                   Generar
                 </button>
               </div>
             </div>
-
-            <p className="text-xs text-white/55">
-              Más adelante estos códigos se guardarán en base de datos y se validarán.
-            </p>
           </div>
         </div>
 

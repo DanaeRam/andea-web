@@ -77,11 +77,10 @@ export default function PortalFamiliarPage() {
               <h3 className="text-lg font-semibold">Objetivo del juego</h3>
               <p className="mt-2 text-white/75 leading-relaxed">
                 <span className="font-semibold text-white">Educativo:</span>{" "}
-                reforzar lecto-escritura y matemáticas básicas con retos cortos.
+                Descripción ...
                 <br />
                 <span className="font-semibold text-white">Emocional:</span>{" "}
-                apoyar habilidades como reconocer emociones, manejar frustración
-                y fortalecer la confianza con actividades sencillas.
+                Descripción ...
               </p>
             </div>
 
@@ -189,11 +188,10 @@ export default function PortalFamiliarPage() {
 
                 <div>
                   <label className="text-sm text-white/80">
-                    Código Familiar <span className="text-white/60">(obligatorio)</span>
+                    Código Familiar <span className="text-white/60"></span>
                   </label>
                   <input
                     type="text"
-                    required
                     placeholder="FAM-48K2"
                     className="mt-2 w-full rounded-xl bg-white/5 px-4 py-3 ring-1 ring-white/10 outline-none focus:ring-white/25"
                   />
@@ -204,7 +202,7 @@ export default function PortalFamiliarPage() {
                 </button>
 
                 <p className="text-xs text-white/55">
-                  Por ahora este registro es de prueba: acepta cualquier texto.
+                  Por ahora este registro es de prueba: solo da clic en el botón.
                 </p>
               </form>
             </div>
@@ -241,7 +239,7 @@ export default function PortalFamiliarPage() {
                 </button>
 
                 <p className="text-xs text-white/55">
-                  Por ahora este registro es de prueba: acepta cualquier texto.
+                  Por ahora este registro es de prueba: solo da clic en el botón.
                 </p>
               </form>
             </div>

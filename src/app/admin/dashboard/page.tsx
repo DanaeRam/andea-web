@@ -16,10 +16,10 @@ const weekly = [
 ];
 
 const lowActivity = [
-  { name: "Ana L.", group: "Grupo A", lastSeen: "Hace 12 días", total: "45 min" },
-  { name: "Diego R.", group: "Grupo B", lastSeen: "Hace 9 días", total: "30 min" },
-  { name: "Sofía M.", group: "Grupo A", lastSeen: "Hace 15 días", total: "25 min" },
-  { name: "Luis P.", group: "Grupo C", lastSeen: "Hace 11 días", total: "40 min" },
+  { name: "Ana L.", lastSeen: "Hace 12 días", total: "45 min" },
+  { name: "Diego R.", lastSeen: "Hace 9 días", total: "30 min" },
+  { name: "Sofía M.", lastSeen: "Hace 15 días", total: "25 min" },
+  { name: "Luis P.", lastSeen: "Hace 11 días", total: "40 min" },
 ];
 
 export default function AdminDashboardPage() {
@@ -79,10 +79,6 @@ export default function AdminDashboardPage() {
               </div>
             ))}
           </div>
-
-          <p className="mt-4 text-sm text-white/70">
-            Útil para ver picos de actividad y días con baja participación.
-          </p>
         </div>
 
         {/* Low activity table */}
@@ -97,7 +93,6 @@ export default function AdminDashboardPage() {
               <thead className="bg-white/5">
                 <tr>
                   <th className="px-4 py-3 text-left font-semibold">Nombre</th>
-                  <th className="px-4 py-3 text-left font-semibold">Grupo</th>
                   <th className="px-4 py-3 text-left font-semibold">Última vez</th>
                   <th className="px-4 py-3 text-left font-semibold">Tiempo total</th>
                 </tr>
@@ -106,7 +101,6 @@ export default function AdminDashboardPage() {
                 {lowActivity.map((r) => (
                   <tr key={r.name}>
                     <td className="px-4 py-3">{r.name}</td>
-                    <td className="px-4 py-3 text-white/75">{r.group}</td>
                     <td className="px-4 py-3 text-white/75">{r.lastSeen}</td>
                     <td className="px-4 py-3 text-white/75">{r.total}</td>
                   </tr>

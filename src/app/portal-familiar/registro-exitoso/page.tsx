@@ -27,10 +27,6 @@ export default function RegistroExitosoPage() {
               Volver al inicio
             </Link>
           </div>
-
-          <p className="mt-6 text-xs text-white/55">
-            *Esta es una pantalla temporal para pruebas. Más adelante validaremos el Código Familiar.
-          </p>
         </div>
       </div>
     </main>
