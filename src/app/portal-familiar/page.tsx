@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-
 export default function PortalFamiliarPage() {
   const router = useRouter();
 
@@ -19,7 +18,6 @@ export default function PortalFamiliarPage() {
 
   return (
     <main className="min-h-screen section-purple text-white">
-      {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <Link href="/" className="flex items-center gap-2">
@@ -51,9 +49,7 @@ export default function PortalFamiliarPage() {
         <div className="h-px w-full bg-white/10" />
       </header>
 
-      {/* Content */}
       <div className="mx-auto max-w-6xl px-6 pt-28 pb-16">
-        {/* Title */}
         <div className="max-w-3xl">
           <p className="text-xs uppercase tracking-widest text-white/70">
             Portal Familiar
@@ -67,184 +63,108 @@ export default function PortalFamiliarPage() {
           </p>
         </div>
 
-        {/* Grid */}
-        <div className="mt-10 grid gap-8 lg:grid-cols-2">
-          {/* Sección informativa */}
-          <section className="card p-6">
-            <h2 className="text-xl font-semibold">Sección informativa</h2>
+        {/* Sección informativa en una sola fila */}
+        <section className="card mt-10 p-6 md:p-8">
+          <h2 className="text-xl font-semibold">Sección informativa</h2>
 
-            <div className="mt-5">
+          <div className="mt-6 grid gap-8">
+            <div>
               <h3 className="text-lg font-semibold">Objetivo del juego</h3>
               <p className="mt-2 text-white/75 leading-relaxed">
-                <span className="font-semibold text-white">Educativo:</span>{" "}
-                Descripción ...
-                <br />
-                <span className="font-semibold text-white">Emocional:</span>{" "}
                 Descripción ...
               </p>
             </div>
 
-            <div className="mt-6">
-              <h3 className="text-lg font-semibold">
-                Qué temas cubre por edades
-              </h3>
+          </div>
+        </section>
 
-              <div className="mt-3 overflow-hidden rounded-xl ring-1 ring-white/10">
-                <table className="w-full text-sm">
-                  <thead className="bg-white/5">
-                    <tr>
-                      <th className="px-4 py-3 text-left font-semibold">
-                        Edad
-                      </th>
-                      <th className="px-4 py-3 text-left font-semibold">
-                        Lecto-escritura
-                      </th>
-                      <th className="px-4 py-3 text-left font-semibold">
-                        Matemáticas
-                      </th>
-                      <th className="px-4 py-3 text-left font-semibold">
-                        Socioemocional
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-white/10">
-                    <tr>
-                      <td className="px-4 py-3">6–7</td>
-                      <td className="px-4 py-3 text-white/75">
-                        Sílabas, palabras, comprensión básica
-                      </td>
-                      <td className="px-4 py-3 text-white/75">
-                        Conteo, sumas simples
-                      </td>
-                      <td className="px-4 py-3 text-white/75">
-                        Identificar emociones
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="px-4 py-3">8–9</td>
-                      <td className="px-4 py-3 text-white/75">
-                        Lectura fluida, escritura guiada
-                      </td>
-                      <td className="px-4 py-3 text-white/75">
-                        Restas, problemas cortos
-                      </td>
-                      <td className="px-4 py-3 text-white/75">
-                        Tolerancia a la frustración
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="px-4 py-3">10–12</td>
-                      <td className="px-4 py-3 text-white/75">
-                        Comprensión, redacción simple
-                      </td>
-                      <td className="px-4 py-3 text-white/75">
-                        Multiplicación/división básicas
-                      </td>
-                      <td className="px-4 py-3 text-white/75">
-                        Autoconfianza y hábitos
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+        {/* Registro e inicio de sesión en 2 columnas */}
+        <section className="mt-10 grid gap-8 lg:grid-cols-2">
+          <div className="card p-6">
+            <h2 className="text-xl font-semibold">Vincula a tu hijo</h2>
+            <p className="mt-2 text-white/75">
+              La fundación crea el perfil del niño y genera un{" "}
+              <span className="font-semibold text-white">Código Familiar</span>{" "}
+              (ej. <span className="font-mono">FAM-48K2</span>). Con ese código,
+              podrás crear tu cuenta y conectar el progreso del niño.
+            </p>
+
+            <form onSubmit={handleRegister} className="mt-6 space-y-4">
+              <div>
+                <label className="text-sm text-white/80">Email</label>
+                <input
+                  type="text"
+                  placeholder="tutor@email.com"
+                  className="mt-2 w-full rounded-xl bg-white/5 px-4 py-3 ring-1 ring-white/10 outline-none focus:ring-white/25"
+                />
               </div>
 
-              <p className="mt-3 text-xs text-white/55">
-                *Los niveles pueden ajustarse según el avance del niño.
+              <div>
+                <label className="text-sm text-white/80">Contraseña</label>
+                <input
+                  type="password"
+                  placeholder="••••••••"
+                  className="mt-2 w-full rounded-xl bg-white/5 px-4 py-3 ring-1 ring-white/10 outline-none focus:ring-white/25"
+                />
+              </div>
+
+              <div>
+                <label className="text-sm text-white/80">
+                  Código Familiar
+                </label>
+                <input
+                  type="text"
+                  placeholder="FAM-48K2"
+                  className="mt-2 w-full rounded-xl bg-white/5 px-4 py-3 ring-1 ring-white/10 outline-none focus:ring-white/25"
+                />
+              </div>
+
+              <button type="submit" className="btn-pill btn-primary w-full">
+                Crear cuenta y vincular
+              </button>
+
+              <p className="text-xs text-white/55">
+                Por ahora este registro es de prueba: solo da clic en el botón.
               </p>
-            </div>
+            </form>
+          </div>
 
-          </section>
+          <div className="card p-6">
+            <h2 className="text-xl font-semibold">Iniciar sesión para padres</h2>
+            <p className="mt-2 text-white/75">
+              Si ya vinculaste tu cuenta, inicia sesión para ver el avance,
+              misiones completadas y recomendaciones.
+            </p>
 
-          {/* Registro + Login */}
-          <section className="space-y-8">
-            {/* Vincula a tu hijo */}
-            <div className="card p-6">
-              <h2 className="text-xl font-semibold">Vincula a tu hijo</h2>
-              <p className="mt-2 text-white/75">
-                La fundación crea el perfil del niño y genera un{" "}
-                <span className="font-semibold text-white">Código Familiar</span>{" "}
-                (ej. <span className="font-mono">FAM-48K2</span>). Con ese código,
-                podrás crear tu cuenta y conectar el progreso del niño.
+            <form onSubmit={handleLogin} className="mt-6 space-y-4">
+              <div>
+                <label className="text-sm text-white/80">Email</label>
+                <input
+                  type="text"
+                  placeholder="tutor@email.com"
+                  className="mt-2 w-full rounded-xl bg-white/5 px-4 py-3 ring-1 ring-white/10 outline-none focus:ring-white/25"
+                />
+              </div>
+
+              <div>
+                <label className="text-sm text-white/80">Contraseña</label>
+                <input
+                  type="password"
+                  placeholder="••••••••"
+                  className="mt-2 w-full rounded-xl bg-white/5 px-4 py-3 ring-1 ring-white/10 outline-none focus:ring-white/25"
+                />
+              </div>
+
+              <button type="submit" className="btn-pill btn-glass w-full">
+                Iniciar sesión
+              </button>
+
+              <p className="text-xs text-white/55">
+                Por ahora este registro es de prueba: solo da clic en el botón.
               </p>
-
-              <form onSubmit={handleRegister} className="mt-6 space-y-4">
-                <div>
-                  <label className="text-sm text-white/80">Email</label>
-                  <input
-                    type="text"
-                    placeholder="tutor@email.com"
-                    className="mt-2 w-full rounded-xl bg-white/5 px-4 py-3 ring-1 ring-white/10 outline-none focus:ring-white/25"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-sm text-white/80">Contraseña</label>
-                  <input
-                    type="password"
-                    placeholder="••••••••"
-                    className="mt-2 w-full rounded-xl bg-white/5 px-4 py-3 ring-1 ring-white/10 outline-none focus:ring-white/25"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-sm text-white/80">
-                    Código Familiar <span className="text-white/60"></span>
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="FAM-48K2"
-                    className="mt-2 w-full rounded-xl bg-white/5 px-4 py-3 ring-1 ring-white/10 outline-none focus:ring-white/25"
-                  />
-                </div>
-
-                <button type="submit" className="btn-pill btn-primary w-full">
-                  Crear cuenta y vincular
-                </button>
-
-                <p className="text-xs text-white/55">
-                  Por ahora este registro es de prueba: solo da clic en el botón.
-                </p>
-              </form>
-            </div>
-
-            {/* Iniciar sesión */}
-            <div className="card p-6">
-              <h2 className="text-xl font-semibold">Iniciar sesión para padres</h2>
-              <p className="mt-2 text-white/75">
-                Si ya vinculaste tu cuenta, inicia sesión para ver el avance,
-                misiones completadas y recomendaciones.
-              </p>
-
-              <form onSubmit={handleLogin} className="mt-6 space-y-4">
-                <div>
-                  <label className="text-sm text-white/80">Email</label>
-                  <input
-                    type="text"
-                    placeholder="tutor@email.com"
-                    className="mt-2 w-full rounded-xl bg-white/5 px-4 py-3 ring-1 ring-white/10 outline-none focus:ring-white/25"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-sm text-white/80">Contraseña</label>
-                  <input
-                    type="password"
-                    placeholder="••••••••"
-                    className="mt-2 w-full rounded-xl bg-white/5 px-4 py-3 ring-1 ring-white/10 outline-none focus:ring-white/25"
-                  />
-                </div>
-
-                <button type="submit" className="btn-pill btn-glass w-full">
-                  Iniciar sesión
-                </button>
-
-                <p className="text-xs text-white/55">
-                  Por ahora este registro es de prueba: solo da clic en el botón.
-                </p>
-              </form>
-            </div>
-          </section>
-        </div>
+            </form>
+          </div>
+        </section>
 
         <footer className="mt-16 text-sm text-white/50">
           © {new Date().getFullYear()} ANDEA
