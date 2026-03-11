@@ -24,7 +24,7 @@ export default function HomePage() {
       <section className="relative min-h-screen overflow-hidden">
         {/* Imagen de fondo */}
         <Image
-          src="/hero.jpg" // cambia a /hero.jpg si tu archivo es .jpg
+          src="/andea-inicio.png" // cambia a /hero.jpg si tu archivo es .jpg
           alt="Fondo del videojuego ANDEA"
           fill
           priority

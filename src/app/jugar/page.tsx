@@ -1,413 +1,913 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
-import Link from "next/link";
 
 type Screen =
-  | "welcome"
-  | "name"
-  | "code"
-  | "menu"
-  | "math"
-  | "reading"
-  | "mental"
-  | "exercise";
-
-type Area = "Matemáticas" | "Lecto-escritura" | "Salud mental" | null;
-
-type Lesson = {
-  title: string;
-  question: string;
-  options: string[];
-  correct: string;
-};
-
-const lessonsByArea: Record<"Matemáticas" | "Lecto-escritura" | "Salud mental", Lesson[]> = {
-  "Matemáticas": [
-    {
-      title: "Lección 1: Sumas",
-      question: "¿Cuánto es 4 + 3?",
-      options: ["5", "7", "8"],
-      correct: "7",
-    },
-    {
-      title: "Lección 2: Restas",
-      question: "¿Cuánto es 9 - 2?",
-      options: ["6", "7", "8"],
-      correct: "7",
-    },
-    {
-      title: "Lección 3: Conteo",
-      question: "¿Cuál número sigue después del 14?",
-      options: ["13", "15", "16"],
-      correct: "15",
-    },
-    {
-      title: "Lección 4: Comparar cantidades",
-      question: "¿Qué número es mayor?",
-      options: ["6", "9", "4"],
-      correct: "9",
-    },
-  ],
-  "Lecto-escritura": [
-    {
-      title: "Lección 1: Vocales",
-      question: "¿Cuál de estas es una vocal?",
-      options: ["M", "E", "T"],
-      correct: "E",
-    },
-    {
-      title: "Lección 2: Completa la palabra",
-      question: "C _ S A",
-      options: ["E", "A", "U"],
-      correct: "A",
-    },
-    {
-      title: "Lección 3: Comprensión",
-      question: "Si Ana tiene un perro, ¿quién tiene un perro?",
-      options: ["Ana", "El perro", "Nadie"],
-      correct: "Ana",
-    },
-    {
-      title: "Lección 4: Identifica la palabra",
-      question: "¿Cuál es una palabra correcta?",
-      options: ["sol", "slo", "osl"],
-      correct: "sol",
-    },
-  ],
-  "Salud mental": [
-    {
-      title: "Lección 1: Emociones",
-      question: "Si quieres llorar, ¿qué emoción podrías sentir?",
-      options: ["Tristeza", "Alegría", "Sorpresa"],
-      correct: "Tristeza",
-    },
-    {
-      title: "Lección 2: Respiración",
-      question: "¿Qué ayuda a calmarte cuando estás nervioso?",
-      options: ["Gritar", "Respirar profundo", "Correr sin parar"],
-      correct: "Respirar profundo",
-    },
-    {
-      title: "Lección 3: Pedir ayuda",
-      question: "Si te sientes muy mal, ¿qué puedes hacer?",
-      options: ["Guardar silencio siempre", "Pedir ayuda a un adulto", "Romper cosas"],
-      correct: "Pedir ayuda a un adulto",
-    },
-  ],
-};
+  | "inicio"
+  | "bienvenida"
+  | "formularioNombre"
+  | "formularioCodigo"
+  | "portales"
+  | "lectura"
+  | "emociones"
+  | "matematicas";
 
 export default function JugarPage() {
-  const [screen, setScreen] = useState<Screen>("welcome");
-  const [playerName, setPlayerName] = useState("");
-  const [gameCode, setGameCode] = useState("");
-  const [selectedArea, setSelectedArea] = useState<Area>(null);
-  const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null);
-  const [selectedAnswer, setSelectedAnswer] = useState("");
-  const [feedback, setFeedback] = useState("");
+  const [screen, setScreen] = useState<Screen>("inicio");
+  const [nombre, setNombre] = useState("");
+  const [codigo, setCodigo] = useState("");
 
-  function goToCode() {
-    if (!playerName.trim()) return;
-    setScreen("code");
-  }
+  return (
+    <div className="min-h-[85vh] w-full rounded-[28px] border border-black/10 bg-[#fff8ee] p-4 shadow-sm md:p-6">
+      <div className="mx-auto flex min-h-[95vh] max-w-6xl items-center justify-center overflow-hidden rounded-[28px] border border-black/10 bg-white shadow-lg">
+        {screen === "inicio" && (
+          <PantallaInicio onStart={() => setScreen("bienvenida")} />
+        )}
 
-  function enterGame() {
-    if (!gameCode.trim()) return;
-    setScreen("menu");
-  }
+        {screen === "bienvenida" && (
+          <PantallaBienvenida onNext={() => setScreen("formularioNombre")} />
+        )}
 
-  function openArea(area: "Matemáticas" | "Lecto-escritura" | "Salud mental") {
-    setSelectedArea(area);
-    if (area === "Matemáticas") setScreen("math");
-    if (area === "Lecto-escritura") setScreen("reading");
-    if (area === "Salud mental") setScreen("mental");
-  }
+        {screen === "formularioNombre" && (
+          <PantallaFormularioNombre
+            nombre={nombre}
+            setNombre={setNombre}
+            onBack={() => setScreen("bienvenida")}
+            onNext={() => setScreen("formularioCodigo")}
+          />
+        )}
 
-  function openLesson(area: "Matemáticas" | "Lecto-escritura" | "Salud mental", index: number) {
-    setSelectedArea(area);
-    setSelectedLesson(lessonsByArea[area][index]);
-    setSelectedAnswer("");
-    setFeedback("");
-    setScreen("exercise");
-  }
+        {screen === "formularioCodigo" && (
+          <PantallaFormularioCodigo
+            nombre={nombre}
+            codigo={codigo}
+            setCodigo={setCodigo}
+            onBack={() => setScreen("formularioNombre")}
+            onEnter={() => setScreen("portales")}
+          />
+        )}
 
-  function checkAnswer() {
-    if (!selectedLesson || !selectedAnswer) return;
+        {screen === "portales" && (
+          <PantallaPortales
+            onLectura={() => setScreen("lectura")}
+            onMatematicas={() => setScreen("matematicas")}
+            onEmociones={() => setScreen("emociones")}
+          />
+        )}
 
-    if (selectedAnswer === selectedLesson.correct) {
-      setFeedback("¡Muy bien! Respuesta correcta 🎉");
-    } else {
-      setFeedback(`Intenta otra vez.`);
-    }
-  }
+        {screen === "lectura" && (
+          <CarruselBiblioteca onBack={() => setScreen("portales")} />
+        )}
 
-  function backToArea() {
-    setSelectedAnswer("");
-    setFeedback("");
-    if (selectedArea === "Matemáticas") setScreen("math");
-    if (selectedArea === "Lecto-escritura") setScreen("reading");
-    if (selectedArea === "Salud mental") setScreen("mental");
-  }
+        {screen === "matematicas" && (
+          <CarruselPociones onBack={() => setScreen("portales")} />
+        )}
 
-  function renderLessonButtons(area: "Matemáticas" | "Lecto-escritura" | "Salud mental") {
-    return (
-      <div className="mt-8 grid gap-4 md:grid-cols-2">
-        {lessonsByArea[area].map((lesson, index) => (
-          <button
-            key={lesson.title}
-            onClick={() => openLesson(area, index)}
-            className="card p-6 text-left hover:bg-white/10 transition"
-          >
-            <h3 className="text-lg font-semibold">{lesson.title}</h3>
-            <p className="mt-2 text-sm text-white/70">
-              (Los ejercicios son solo un ejemplo)
-            </p>
-          </button>
-        ))}
+        {screen === "emociones" && (
+          <CarruselGaleria onBack={() => setScreen("portales")} />
+        )}
       </div>
-    );
+
+      <style jsx global>{`
+        @keyframes pulseMagic {
+          0% {
+            box-shadow: 0 0 10px rgba(168, 85, 247, 0.7),
+              0 0 25px rgba(168, 85, 247, 0.5);
+          }
+          50% {
+            box-shadow: 0 0 25px rgba(168, 85, 247, 1),
+              0 0 60px rgba(168, 85, 247, 0.8);
+          }
+          100% {
+            box-shadow: 0 0 10px rgba(168, 85, 247, 0.7),
+              0 0 25px rgba(168, 85, 247, 0.5);
+          }
+        }
+
+        @keyframes portalPulse {
+          0% {
+            transform: scale(1);
+            opacity: 0.95;
+          }
+          50% {
+            transform: scale(1.22);
+            opacity: 1;
+          }
+          100% {
+            transform: scale(1);
+            opacity: 0.95;
+          }
+        }
+      `}</style>
+    </div>
+  );
+}
+
+function PantallaInicio({ onStart }: { onStart: () => void }) {
+  return (
+    <div className="relative h-[95vh] w-full">
+      <Image
+        src="/andea-inicio.png"
+        alt="Portada del juego Andea"
+        fill
+        className="object-cover"
+        priority
+      />
+
+      <div className="absolute inset-0 bg-black/10" />
+
+      <div className="absolute left-1/2 top-14 -translate-x-1/2">
+        <h1
+          className="text-center text-4xl font-semibold tracking-wide text-white/85 drop-shadow-md md:text-8xl"
+          style={{ fontFamily: "Georgia, serif" }}
+        >
+          Andea
+        </h1>
+      </div>
+
+      <div
+        style={{
+          position: "absolute",
+          bottom: "40px",
+          right: "40px",
+        }}
+      >
+        <button
+          onClick={onStart}
+          style={{
+            background: "linear-gradient(90deg, #d8b4fe, #7e22ce)",
+            color: "white",
+            padding: "18px 42px",
+            borderRadius: "999px",
+            fontWeight: "600",
+            fontSize: "18px",
+            border: "none",
+            cursor: "pointer",
+            boxShadow:
+              "0 0 15px rgba(168,85,247,0.8), 0 0 35px rgba(168,85,247,0.5)",
+            animation: "pulseMagic 2.5s infinite",
+            transition: "transform 0.2s, box-shadow 0.2s",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = "scale(1.08)";
+            e.currentTarget.style.boxShadow =
+              "0 0 25px rgba(168,85,247,1), 0 0 60px rgba(168,85,247,0.9)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = "scale(1)";
+            e.currentTarget.style.boxShadow =
+              "0 0 15px rgba(168,85,247,0.8), 0 0 35px rgba(168,85,247,0.5)";
+          }}
+        >
+          Iniciar aventura
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function PantallaBienvenida({ onNext }: { onNext: () => void }) {
+  return (
+    <div className="relative h-[95vh] w-full">
+      <Image
+        src="/inicio.png"
+        alt="Pantalla de bienvenida"
+        fill
+        className="object-cover"
+        priority
+      />
+
+      <div className="absolute inset-0 bg-[#5aa0ff]/20" />
+
+      <div className="absolute inset-0 flex items-center justify-center p-6">
+        <div
+          style={{
+            width: "100%",
+            maxWidth: "560px",
+            background: "rgba(255,255,255,0.16)",
+            border: "1px solid rgba(255,255,255,0.22)",
+            borderRadius: "28px",
+            padding: "38px 30px",
+            backdropFilter: "blur(3px)",
+            boxShadow: "0 10px 35px rgba(0,0,0,0.15)",
+            textAlign: "center",
+          }}
+        >
+          <h2
+            style={{
+              color: "white",
+              fontSize: "42px",
+              fontWeight: 700,
+              marginBottom: "14px",
+            }}
+          >
+            Hola, explorador
+          </h2>
+
+          <p
+            style={{
+              color: "rgba(255,255,255,1)",
+              fontSize: "20px",
+              lineHeight: 1.5,
+              marginBottom: "28px",
+            }}
+          >
+            Estás a punto de entrar a una aventura llena de historias,
+            emociones y desafíos.
+          </p>
+
+          <button
+            onClick={onNext}
+            style={{
+              background: "linear-gradient(90deg, #c084fc, #6d28d9)",
+              color: "white",
+              padding: "16px 34px",
+              borderRadius: "999px",
+              border: "none",
+              fontSize: "18px",
+              fontWeight: 700,
+              cursor: "pointer",
+              boxShadow: "0 10px 25px rgba(0,0,0,0.18)",
+            }}
+          >
+            Ingresa tu nombre
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PantallaFormularioNombre({
+  nombre,
+  setNombre,
+  onBack,
+  onNext,
+}: {
+  nombre: string;
+  setNombre: (value: string) => void;
+  onBack: () => void;
+  onNext: () => void;
+}) {
+  return (
+    <div className="relative h-[95vh] w-full">
+      <Image
+        src="/inicio.png"
+        alt="Formulario de nombre"
+        fill
+        className="object-cover"
+        priority
+      />
+
+      <div className="absolute inset-0 bg-[#5aa0ff]/20" />
+
+      <div className="absolute inset-0 flex items-center justify-center p-6">
+        <div
+          style={{
+            width: "100%",
+            maxWidth: "720px",
+            background: "rgba(255,255,255,0.08)",
+            border: "1px solid rgba(255,255,255,0.15)",
+            borderRadius: "28px",
+            padding: "40px",
+            backdropFilter: "blur(4px)",
+          }}
+        >
+          <h2
+            style={{
+              color: "white",
+              fontSize: "40px",
+              fontWeight: 700,
+              marginBottom: "12px",
+            }}
+          >
+            ¿Cómo te llamas?
+          </h2>
+
+          <p
+            style={{
+              color: "rgba(255,255,255,0.85)",
+              fontSize: "18px",
+              marginBottom: "26px",
+            }}
+          >
+            Escribe tu nombre para comenzar la aventura.
+          </p>
+
+          <input
+            value={nombre}
+            onChange={(e) => setNombre(e.target.value)}
+            placeholder="Nombre"
+            style={{
+              width: "100%",
+              padding: "18px 22px",
+              borderRadius: "18px",
+              border: "1px solid rgba(255,255,255,0.14)",
+              background: "rgba(255,255,255,0.1)",
+              color: "white",
+              fontSize: "18px",
+              outline: "none",
+              marginBottom: "28px",
+            }}
+          />
+
+          <div style={{ display: "flex", gap: "18px" }}>
+            <button
+              onClick={onBack}
+              style={{
+                background: "rgba(255,255,255,0.22)",
+                color: "white",
+                padding: "16px 28px",
+                borderRadius: "999px",
+                border: "1px solid rgba(255,255,255,0.3)",
+                fontSize: "16px",
+                fontWeight: 700,
+                cursor: "pointer",
+              }}
+            >
+              Volver
+            </button>
+
+            <button
+              onClick={onNext}
+              style={{
+                background: "linear-gradient(90deg, #4338ca, #7c3aed)",
+                color: "white",
+                padding: "16px 28px",
+                borderRadius: "999px",
+                border: "none",
+                fontSize: "16px",
+                fontWeight: 700,
+                cursor: "pointer",
+                boxShadow: "0 10px 25px rgba(0,0,0,0.18)",
+              }}
+            >
+              Continuar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PantallaFormularioCodigo({
+  nombre,
+  codigo,
+  setCodigo,
+  onBack,
+  onEnter,
+}: {
+  nombre: string;
+  codigo: string;
+  setCodigo: (value: string) => void;
+  onBack: () => void;
+  onEnter: () => void;
+}) {
+  return (
+    <div className="relative h-[95vh] w-full">
+      <Image
+        src="/inicio.png"
+        alt="Formulario de código"
+        fill
+        className="object-cover"
+        priority
+      />
+
+      <div className="absolute inset-0 bg-[#5aa0ff]/20" />
+
+      <div className="absolute inset-0 flex items-center justify-center p-6">
+        <div
+          style={{
+            width: "100%",
+            maxWidth: "720px",
+            background: "rgba(255,255,255,0.08)",
+            border: "1px solid rgba(255,255,255,0.15)",
+            borderRadius: "28px",
+            padding: "40px",
+            backdropFilter: "blur(4px)",
+          }}
+        >
+          <h2
+            style={{
+              color: "white",
+              fontSize: "40px",
+              fontWeight: 700,
+              marginBottom: "12px",
+            }}
+          >
+            ¡Hola, {nombre || "Nombre"}!
+          </h2>
+
+          <p
+            style={{
+              color: "rgba(255,255,255,0.85)",
+              fontSize: "18px",
+              marginBottom: "26px",
+            }}
+          >
+            Ingresa tu código de juego para entrar.
+          </p>
+
+          <input
+            value={codigo}
+            onChange={(e) => setCodigo(e.target.value)}
+            placeholder="Ingresa cualquier texto (demo)."
+            style={{
+              width: "100%",
+              padding: "18px 22px",
+              borderRadius: "18px",
+              border: "1px solid rgba(255,255,255,0.14)",
+              background: "rgba(255,255,255,0.1)",
+              color: "white",
+              fontSize: "18px",
+              outline: "none",
+              marginBottom: "28px",
+            }}
+          />
+
+          <div style={{ display: "flex", gap: "18px" }}>
+            <button
+              onClick={onBack}
+              style={{
+                background: "rgba(255,255,255,0.22)",
+                color: "white",
+                padding: "16px 28px",
+                borderRadius: "999px",
+                border: "1px solid rgba(255,255,255,0.3)",
+                fontSize: "16px",
+                fontWeight: 700,
+                cursor: "pointer",
+              }}
+            >
+              Volver
+            </button>
+
+            <button
+              onClick={onEnter}
+              style={{
+                background: "linear-gradient(90deg, #4338ca, #7c3aed)",
+                color: "white",
+                padding: "16px 28px",
+                borderRadius: "999px",
+                border: "none",
+                fontSize: "16px",
+                fontWeight: 700,
+                cursor: "pointer",
+                boxShadow: "0 10px 25px rgba(0,0,0,0.18)",
+              }}
+            >
+              Entrar al juego
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PantallaPortales({
+  onLectura,
+  onMatematicas,
+  onEmociones,
+}: {
+  onLectura: () => void;
+  onMatematicas: () => void;
+  onEmociones: () => void;
+}) {
+  return (
+    <div className="relative h-[95vh] w-full">
+      <Image
+        src="/sala-portales.png"
+        alt="Sala de los portales"
+        fill
+        className="object-cover"
+        priority
+      />
+
+      <div className="absolute inset-0 bg-black/5" />
+
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="grid w-full max-w-4xl grid-cols-3 px-8">
+          <div className="flex justify-center">
+            <button
+              onClick={onLectura}
+              aria-label="Ir a la Biblioteca Encantada"
+              title="Biblioteca Encantada"
+              style={{
+                width: "26px",
+                height: "26px",
+                borderRadius: "999px",
+                border: "2px solid rgba(255,255,255,0.85)",
+                background:
+                  "radial-gradient(circle, #ffffff 0%, #dbeafe 45%, #60a5fa 100%)",
+                boxShadow:
+                  "0 0 10px rgba(96,165,250,0.9), 0 0 22px rgba(96,165,250,0.6), 0 0 40px rgba(255,255,255,0.45)",
+                animation: "portalPulse 2.2s ease-in-out infinite",
+                cursor: "pointer",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "scale(1.18)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "scale(1)";
+              }}
+            />
+          </div>
+
+          <div className="flex justify-center">
+            <button
+              onClick={onMatematicas}
+              aria-label="Ir a la Sala de Pociones"
+              title="Sala de Pociones"
+              style={{
+                width: "26px",
+                height: "26px",
+                borderRadius: "999px",
+                border: "2px solid rgba(255,255,255,0.85)",
+                background:
+                  "radial-gradient(circle, #ffffff 0%, #fbcfe8 45%, #ec4899 100%)",
+                boxShadow:
+                  "0 0 10px rgba(236,72,153,0.9), 0 0 22px rgba(236,72,153,0.6), 0 0 40px rgba(255,255,255,0.45)",
+                animation: "portalPulse 2.4s ease-in-out infinite",
+                cursor: "pointer",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "scale(1.18)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "scale(1)";
+              }}
+            />
+          </div>
+
+          <div className="flex justify-center">
+            <button
+              onClick={onEmociones}
+              aria-label="Ir a la Galería de las Emociones"
+              title="Galería de las Emociones"
+              style={{
+                width: "26px",
+                height: "26px",
+                borderRadius: "999px",
+                border: "2px solid rgba(255,255,255,0.85)",
+                background:
+                  "radial-gradient(circle, #ffffff 0%, #fde68a 45%, #f59e0b 100%)",
+                boxShadow:
+                  "0 0 10px rgba(245,158,11,0.9), 0 0 22px rgba(245,158,11,0.6), 0 0 40px rgba(255,255,255,0.45)",
+                animation: "portalPulse 2.6s ease-in-out infinite",
+                cursor: "pointer",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "scale(1.18)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "scale(1)";
+              }}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CarruselBiblioteca({ onBack }: { onBack: () => void }) {
+  const imagenes = ["/biblioteca1.png", "/biblioteca2.png", "/biblioteca3.png"];
+  const niveles = ["Nivel básico", "Nivel intermedio", "Nivel avanzado"];
+  const [indice, setIndice] = useState(0);
+
+  function siguiente() {
+    setIndice((prev) => (prev + 1) % imagenes.length);
+  }
+
+  function anterior() {
+    setIndice((prev) => (prev - 1 + imagenes.length) % imagenes.length);
   }
 
   return (
-<main className="min-h-screen section-purple text-white px-6 py-10">
+    <div className="relative h-[95vh] w-full overflow-hidden">
+      <Image
+        src={imagenes[indice]}
+        alt={`Biblioteca Encantada ${indice + 1}`}
+        fill
+        className="object-cover"
+        priority
+      />
 
-  {/* Barra superior */}
-  <div className="mx-auto max-w-5xl mb-6 flex items-center justify-between">
-    <Link href="/" className="text-white/80 hover:text-white">
-      ← Volver al inicio
-    </Link>
+      <div className="absolute inset-0 bg-black/5" />
 
-    <h1 className="text-2xl font-semibold">ANDEA</h1>
-
-    <div />
-  </div>
-
-  {/* Contenedor centrado */}
-  <div className="flex justify-center">
-
-    {/* Marco del juego */}
-    <div className="w-full max-w-5xl rounded-3xl bg-[#3c8bec] ring-1 ring-white/10 shadow-2xl overflow-hidden">
-
-      <div className="p-16">
-
-
-
-        {/* Pantalla 1 */}
-        {screen === "welcome" && (
-          <section className="mt-2 card p-18 text-center">
-            <p className="text-xs uppercase tracking-widest text-white/70">
-              Bienvenido al juego
-            </p>
-            <h2 className="mt-3 text-4xl font-semibold text-hero-title">
-              ¡Hola, explorador!
-            </h2>
-            <p className="mt-4 max-w-2xl mx-auto text-white/80 leading-relaxed">
-              Prepárate para una aventura llena de retos, aprendizaje y diversión.
-              En ANDEA podrás jugar, descubrir y aprender mientras superas misiones.
-            </p>
-
-            <button
-              onClick={() => setScreen("name")}
-              className="btn-pill btn-primary mt-8"
-            >
-              Ingresa tu nombre
-            </button>
-          </section>
-        )}
-
-        {/* Pantalla 2 */}
-        {screen === "name" && (
-          <section className="mt-2 card p-18">
-            <h2 className="text-3xl font-semibold text-hero-title">
-              ¿Cómo te llamas?
-            </h2>
-            <p className="mt-3 text-white/75">
-              Escribe tu nombre para comenzar la aventura.
-            </p>
-
-            <input
-              type="text"
-              value={playerName}
-              onChange={(e) => setPlayerName(e.target.value)}
-              placeholder="Escribe tu nombre"
-              className="mt-6 w-full rounded-xl bg-white/5 px-4 py-3 ring-1 ring-white/10 outline-none focus:ring-white/25"
-            />
-
-            <div className="mt-6 flex gap-3">
-              <button
-                onClick={() => setScreen("welcome")}
-                className="btn-pill btn-glass"
-              >
-                Volver
-              </button>
-              <button
-                onClick={goToCode}
-                className="btn-pill btn-primary"
-              >
-                Continuar
-              </button>
-            </div>
-          </section>
-        )}
-
-        {/* Pantalla 3 */}
-        {screen === "code" && (
-          <section className="mt-2 card p-18">
-            <h2 className="text-3xl font-semibold text-hero-title">
-              ¡Hola, {playerName || "jugador"}!
-            </h2>
-            <p className="mt-3 text-white/75">
-              Ingresa tu código de juego para entrar.
-            </p>
-
-            <input
-              type="text"
-              value={gameCode}
-              onChange={(e) => setGameCode(e.target.value)}
-              placeholder="Ingresa cualquier texto (demo)."
-              className="mt-6 w-full rounded-xl bg-white/5 px-4 py-3 ring-1 ring-white/10 outline-none focus:ring-white/25"
-            />
-
-            <div className="mt-6 flex gap-3">
-              <button
-                onClick={() => setScreen("name")}
-                className="btn-pill btn-glass"
-              >
-                Volver
-              </button>
-              <button
-                onClick={enterGame}
-                className="btn-pill btn-primary"
-              >
-                Entrar al juego
-              </button>
-            </div>
-          </section>
-        )}
-
-        {/* Pantalla 4 */}
-        {screen === "menu" && (
-          <section className="mt-2 card p-8">
-            <h2 className="mt-3 text-3xl font-semibold text-hero-title">
-              Elige tu aventura, {playerName}
-            </h2>
-            <p className="mt-3 text-white/80">
-              Escoge una sección para comenzar tus lecciones.
-            </p>
-
-            <div className="mt-8 p-8 grid gap-2 md:grid-cols-3">
-              <button
-                onClick={() => openArea("Matemáticas")}
-                className="card p-6 text-left hover:bg-white/10 transition"
-              >
-                <h3 className="text-xl font-semibold">Matemáticas</h3>
-                <p className="mt-2 text-sm text-white/70">
-                  Números, sumas, restas y más retos.
-                </p>
-              </button>
-
-              <button
-                onClick={() => openArea("Lecto-escritura")}
-                className="card p-6 text-left hover:bg-white/10 transition"
-              >
-                <h3 className="text-xl font-semibold">Lecto-escritura</h3>
-                <p className="mt-2 text-sm text-white/70">
-                  Palabras, lectura y comprensión.
-                </p>
-              </button>
-
-              <button
-                onClick={() => openArea("Salud mental")}
-                className="card p-6 text-left hover:bg-white/10 transition"
-              >
-                <h3 className="text-xl font-semibold">Salud mental</h3>
-                <p className="mt-2 text-sm text-white/70">
-                  Emociones, calma y bienestar.
-                </p>
-              </button>
-            </div>
-          </section>
-        )}
-
-        {/* Matemáticas */}
-        {screen === "math" && (
-          <section className="card p-8">
-            <h2 className="text-3xl font-semibold text-hero-title">Matemáticas</h2>
-            {renderLessonButtons("Matemáticas")}
-            <button onClick={() => setScreen("menu")} className="btn-pill btn-glass mt-8">
-              Volver al menú
-            </button>
-          </section>
-        )}
-
-        {/* Lecto-escritura */}
-        {screen === "reading" && (
-          <section className="card p-8">
-            <h2 className="text-3xl font-semibold text-hero-title">Lecto-escritura</h2>
-            {renderLessonButtons("Lecto-escritura")}
-            <button onClick={() => setScreen("menu")} className="btn-pill btn-glass mt-8">
-              Volver al menú
-            </button>
-          </section>
-        )}
-
-        {/* Salud mental */}
-        {screen === "mental" && (
-          <section className="card p-8">
-            <h2 className="text-3xl font-semibold text-hero-title">Salud mental</h2>
-            {renderLessonButtons("Salud mental")}
-            <button onClick={() => setScreen("menu")} className="btn-pill btn-glass mt-8">
-              Volver al menú
-            </button>
-          </section>
-        )}
-
-        {/* Ejercicio */}
-        {screen === "exercise" && selectedLesson && (
-          <section className="mt-2 card p-6">
-            <p className="text-xs uppercase tracking-widest text-white/70">
-              {selectedArea}
-            </p>
-            <h2 className="mt-2 text-3xl font-semibold text-hero-title">
-              {selectedLesson.title}
-            </h2>
-            <p className="mt-5 text-lg text-white/90">{selectedLesson.question}</p>
-
-            <div className="mt-6 grid gap-3">
-              {selectedLesson.options.map((option) => (
-                <button
-                  key={option}
-                  onClick={() => setSelectedAnswer(option)}
-                  className={`rounded-xl px-4 py-3 text-left ring-1 transition ${
-                    selectedAnswer === option
-                      ? "bg-white text-black ring-white"
-                      : "bg-white/5 text-white ring-white/10 hover:bg-white/10"
-                  }`}
-                >
-                  {option}
-                </button>
-              ))}
-            </div>
-
-            <div className="mt-6 flex flex-wrap gap-3">
-              <button onClick={backToArea} className="btn-pill btn-glass">
-                Volver
-              </button>
-              <button onClick={checkAnswer} className="btn-pill btn-primary">
-                Revisar respuesta
-              </button>
-            </div>
-
-            {feedback && (
-              <div className="mt-6 rounded-xl bg-white/10 p-4 ring-1 ring-white/10">
-                <p className="text-white/90">{feedback}</p>
-              </div>
-            )}
-          </section>
-        )}
+      <div
+        style={{
+          position: "absolute",
+          top: "20px",
+          left: "50%",
+          transform: "translateX(-50%)",
+          padding: "10px 22px",
+          borderRadius: "999px",
+          fontWeight: "600",
+          fontSize: "18px",
+          boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+          zIndex: 20,
+          background: "rgba(255,255,255,0.75)",
+        }}
+      >
+        {niveles[indice]}
       </div>
+
+      <div className="absolute left-6 top-6 z-20">
+        <button
+          onClick={onBack}
+          style={{
+            background: "rgba(255,255,255,0.78)",
+            padding: "10px 18px",
+            borderRadius: "999px",
+            border: "none",
+            cursor: "pointer",
+            fontWeight: "600",
+            backdropFilter: "blur(6px)",
+          }}
+        >
+          Volver
+        </button>
+      </div>
+
+      <button
+        onClick={anterior}
+        aria-label="Imagen anterior"
+        style={{
+          position: "absolute",
+          left: "18px",
+          top: "50%",
+          transform: "translateY(-50%)",
+          width: "56px",
+          height: "56px",
+          borderRadius: "999px",
+          border: "none",
+          background: "rgba(255,255,255,0.18)",
+          color: "white",
+          fontSize: "30px",
+          fontWeight: "700",
+          cursor: "pointer",
+          backdropFilter: "blur(6px)",
+          boxShadow: "0 4px 18px rgba(0,0,0,0.18)",
+          zIndex: 20,
+        }}
+      >
+        ‹
+      </button>
+
+      <button
+        onClick={siguiente}
+        aria-label="Imagen siguiente"
+        style={{
+          position: "absolute",
+          right: "18px",
+          top: "50%",
+          transform: "translateY(-50%)",
+          width: "56px",
+          height: "56px",
+          borderRadius: "999px",
+          border: "none",
+          background: "rgba(255,255,255,0.18)",
+          color: "white",
+          fontSize: "30px",
+          fontWeight: "700",
+          cursor: "pointer",
+          backdropFilter: "blur(6px)",
+          boxShadow: "0 4px 18px rgba(0,0,0,0.18)",
+          zIndex: 20,
+        }}
+      >
+        ›
+      </button>
     </div>
+  );
+}
+
+function CarruselPociones({ onBack }: { onBack: () => void }) {
+  const imagenes = ["/pociones1.png", "/pociones2.png", "/pociones3.png"];
+  const niveles = ["Nivel básico", "Nivel intermedio", "Nivel avanzado"];
+  const [indice, setIndice] = useState(0);
+
+  function siguiente() {
+    setIndice((prev) => (prev + 1) % imagenes.length);
+  }
+
+  function anterior() {
+    setIndice((prev) => (prev - 1 + imagenes.length) % imagenes.length);
+  }
+
+  return (
+    <div className="relative h-[95vh] w-full overflow-hidden">
+      <Image
+        src={imagenes[indice]}
+        alt={`Sala de Pociones ${indice + 1}`}
+        fill
+        className="object-cover"
+        priority
+      />
+
+      <div className="absolute inset-0 bg-black/5" />
+
+      <div
+        style={{
+          position: "absolute",
+          top: "20px",
+          left: "50%",
+          transform: "translateX(-50%)",
+          padding: "10px 22px",
+          borderRadius: "999px",
+          fontWeight: "600",
+          fontSize: "18px",
+          boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+          zIndex: 20,
+          background: "rgba(255,255,255,0.75)",
+        }}
+      >
+        {niveles[indice]}
+      </div>
+
+      <div className="absolute left-6 top-6 z-20">
+        <button
+          onClick={onBack}
+          style={{
+            background: "rgba(255,255,255,0.78)",
+            padding: "10px 18px",
+            borderRadius: "999px",
+            border: "none",
+            cursor: "pointer",
+            fontWeight: "600",
+            backdropFilter: "blur(6px)",
+          }}
+        >
+          Volver
+        </button>
+      </div>
+
+      <button
+        onClick={anterior}
+        aria-label="Imagen anterior"
+        style={{
+          position: "absolute",
+          left: "18px",
+          top: "50%",
+          transform: "translateY(-50%)",
+          width: "56px",
+          height: "56px",
+          borderRadius: "999px",
+          border: "none",
+          background: "rgba(255,255,255,0.18)",
+          color: "white",
+          fontSize: "30px",
+          fontWeight: "700",
+          cursor: "pointer",
+          backdropFilter: "blur(6px)",
+          boxShadow: "0 4px 18px rgba(0,0,0,0.18)",
+          zIndex: 20,
+        }}
+      >
+        ‹
+      </button>
+
+      <button
+        onClick={siguiente}
+        aria-label="Imagen siguiente"
+        style={{
+          position: "absolute",
+          right: "18px",
+          top: "50%",
+          transform: "translateY(-50%)",
+          width: "56px",
+          height: "56px",
+          borderRadius: "999px",
+          border: "none",
+          background: "rgba(255,255,255,0.18)",
+          color: "white",
+          fontSize: "30px",
+          fontWeight: "700",
+          cursor: "pointer",
+          backdropFilter: "blur(6px)",
+          boxShadow: "0 4px 18px rgba(0,0,0,0.18)",
+          zIndex: 20,
+        }}
+      >
+        ›
+      </button>
     </div>
-    </main>
+  );
+}
+
+function CarruselGaleria({ onBack }: { onBack: () => void }) {
+  const imagenes = ["/galeria1.png", "/galeria2.png", "/galeria3.png"];
+  const niveles = ["Nivel básico", "Nivel intermedio", "Nivel avanzado"];
+  const [indice, setIndice] = useState(0);
+
+  function siguiente() {
+    setIndice((prev) => (prev + 1) % imagenes.length);
+  }
+
+  function anterior() {
+    setIndice((prev) => (prev - 1 + imagenes.length) % imagenes.length);
+  }
+
+  return (
+    <div className="relative h-[95vh] w-full overflow-hidden">
+      <Image
+        src={imagenes[indice]}
+        alt={`Galería de emociones ${indice + 1}`}
+        fill
+        className="object-cover"
+        priority
+      />
+
+      <div className="absolute inset-0 bg-black/5" />
+
+      <div
+        style={{
+          position: "absolute",
+          top: "20px",
+          left: "50%",
+          transform: "translateX(-50%)",
+          padding: "10px 22px",
+          borderRadius: "999px",
+          fontWeight: "600",
+          fontSize: "18px",
+          boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+          zIndex: 20,
+          background: "rgba(255,255,255,0.75)",
+        }}
+      >
+        {niveles[indice]}
+      </div>
+
+      <div className="absolute left-6 top-6 z-20">
+        <button
+          onClick={onBack}
+          style={{
+            background: "rgba(255,255,255,0.78)",
+            padding: "10px 18px",
+            borderRadius: "999px",
+            border: "none",
+            cursor: "pointer",
+            fontWeight: "600",
+            backdropFilter: "blur(6px)",
+          }}
+        >
+          Volver
+        </button>
+      </div>
+
+      <button
+        onClick={anterior}
+        aria-label="Imagen anterior"
+        style={{
+          position: "absolute",
+          left: "18px",
+          top: "50%",
+          transform: "translateY(-50%)",
+          width: "56px",
+          height: "56px",
+          borderRadius: "999px",
+          border: "none",
+          background: "rgba(255,255,255,0.18)",
+          color: "white",
+          fontSize: "30px",
+          fontWeight: "700",
+          cursor: "pointer",
+          backdropFilter: "blur(6px)",
+          boxShadow: "0 4px 18px rgba(0,0,0,0.18)",
+          zIndex: 20,
+        }}
+      >
+        ‹
+      </button>
+
+      <button
+        onClick={siguiente}
+        aria-label="Imagen siguiente"
+        style={{
+          position: "absolute",
+          right: "18px",
+          top: "50%",
+          transform: "translateY(-50%)",
+          width: "56px",
+          height: "56px",
+          borderRadius: "999px",
+          border: "none",
+          background: "rgba(255,255,255,0.18)",
+          color: "white",
+          fontSize: "30px",
+          fontWeight: "700",
+          cursor: "pointer",
+          backdropFilter: "blur(6px)",
+          boxShadow: "0 4px 18px rgba(0,0,0,0.18)",
+          zIndex: 20,
+        }}
+      >
+        ›
+      </button>
+    </div>
   );
 }
