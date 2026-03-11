@@ -957,14 +957,57 @@ function CarruselPociones({ onBack }: { onBack: () => void }) {
   const imagenes = ["/pociones1.png", "/pociones2.png", "/pociones3.png"];
   const niveles = ["Nivel básico", "Nivel intermedio", "Nivel avanzado"];
   const [indice, setIndice] = useState(0);
+  const [leccionActiva, setLeccionActiva] = useState<number | null>(null);
+
+  const lecciones = [
+    {
+      id: 1,
+      nombre: "Poción de sumas",
+      descripcion:
+        "Resuelve sumas sencillas para completar la receta mágica.",
+      imagen: "/pocion-leccion1.png",
+      puntos: 50,
+    },
+    {
+      id: 2,
+      nombre: "Poción de restas",
+      descripcion:
+        "Encuentra el resultado correcto para mezclar los ingredientes.",
+      imagen: "/pocion-leccion2.png",
+      puntos: 60,
+    },
+    {
+      id: 3,
+      nombre: "Poción de patrones",
+      descripcion:
+        "Descubre la secuencia correcta para activar el caldero encantado.",
+      imagen: "/pocion-leccion3.png",
+      puntos: 70,
+    },
+    {
+      id: 4,
+      nombre: "Poción de conteo",
+      descripcion:
+        "Cuenta ingredientes y elige la cantidad correcta para la mezcla final.",
+      imagen: "/pocion-leccion4.png",
+      puntos: 80,
+    },
+  ];
 
   function siguiente() {
     setIndice((prev) => (prev + 1) % imagenes.length);
+    setLeccionActiva(null);
   }
 
   function anterior() {
     setIndice((prev) => (prev - 1 + imagenes.length) % imagenes.length);
+    setLeccionActiva(null);
   }
+
+  const leccionSeleccionada =
+    leccionActiva !== null
+      ? lecciones.find((item) => item.id === leccionActiva)
+      : null;
 
   return (
     <div className="relative h-[95vh] w-full overflow-hidden">
@@ -1062,6 +1105,48 @@ function CarruselPociones({ onBack }: { onBack: () => void }) {
       >
         ›
       </button>
+
+      {indice === 0 && (
+        <>
+          {/* poción izquierda inferior morada/roja */}
+          <BotonLibro
+            top="69%"
+            left="11%"
+            onClick={() => setLeccionActiva(1)}
+          />
+
+          {/* poción verde grande izquierda-centro */}
+          <BotonLibro
+            top="53%"
+            left="21%"
+            onClick={() => setLeccionActiva(2)}
+          />
+
+          {/* poción roja/naranja derecha-centro */}
+          <BotonLibro
+            top="63%"
+            left="67%"
+            onClick={() => setLeccionActiva(3)}
+          />
+
+          {/* caldero grande inferior derecho */}
+          <BotonLibro
+            top="79%"
+            left="82%"
+            onClick={() => setLeccionActiva(4)}
+          />
+        </>
+      )}
+
+      {leccionSeleccionada && (
+        <TarjetaLeccion
+          nombre={leccionSeleccionada.nombre}
+          descripcion={leccionSeleccionada.descripcion}
+          imagen={leccionSeleccionada.imagen}
+          puntos={leccionSeleccionada.puntos}
+          onClose={() => setLeccionActiva(null)}
+        />
+      )}
     </div>
   );
 }
@@ -1070,14 +1155,81 @@ function CarruselGaleria({ onBack }: { onBack: () => void }) {
   const imagenes = ["/galeria1.png", "/galeria2.png", "/galeria3.png"];
   const niveles = ["Nivel básico", "Nivel intermedio", "Nivel avanzado"];
   const [indice, setIndice] = useState(0);
+  const [leccionActiva, setLeccionActiva] = useState<number | null>(null);
+
+  const lecciones = [
+    {
+      id: 1,
+      nombre: "¿Qué emoción ves?",
+      descripcion:
+        "Observa la escena y elige la emoción principal que transmite la pintura.",
+      imagen: "/emocion1.png",
+      puntos: 50,
+    },
+    {
+      id: 2,
+      nombre: "Empatía en acción",
+      descripcion:
+        "Descubre cómo se siente un personaje y qué podrías hacer para ayudarlo.",
+      imagen: "/emocion2.png",
+      puntos: 60,
+    },
+    {
+      id: 3,
+      nombre: "Respira y cuenta",
+      descripcion:
+        "Aprende una estrategia sencilla para calmarte cuando te sientes nervioso.",
+      imagen: "/emocion3.png",
+      puntos: 70,
+    },
+    {
+      id: 4,
+      nombre: "Nombra lo que sientes",
+      descripcion:
+        "Relaciona cada emoción con la palabra correcta y expresa lo que pasa dentro de ti.",
+      imagen: "/emocion4.png",
+      puntos: 80,
+    },
+    {
+      id: 5,
+      nombre: "¿Qué harías tú?",
+      descripcion:
+        "Lee una situación y elige la mejor manera de responder con calma y respeto.",
+      imagen: "/emocion5.png",
+      puntos: 90,
+    },
+    {
+      id: 6,
+      nombre: "Señales del cuerpo",
+      descripcion:
+        "Identifica cómo reacciona el cuerpo cuando sientes miedo, enojo o alegría.",
+      imagen: "/emocion6.png",
+      puntos: 95,
+    },
+    {
+      id: 7,
+      nombre: "Mi espacio seguro",
+      descripcion:
+        "Explora ideas para crear un lugar o rutina que te ayude a sentirte mejor.",
+      imagen: "/emocion7.png",
+      puntos: 100,
+    },
+  ];
 
   function siguiente() {
     setIndice((prev) => (prev + 1) % imagenes.length);
+    setLeccionActiva(null);
   }
 
   function anterior() {
     setIndice((prev) => (prev - 1 + imagenes.length) % imagenes.length);
+    setLeccionActiva(null);
   }
+
+  const leccionSeleccionada =
+    leccionActiva !== null
+      ? lecciones.find((item) => item.id === leccionActiva)
+      : null;
 
   return (
     <div className="relative h-[95vh] w-full overflow-hidden">
@@ -1175,6 +1327,59 @@ function CarruselGaleria({ onBack }: { onBack: () => void }) {
       >
         ›
       </button>
+
+      {indice === 0 && (
+        <>
+          {/* fila superior */}
+          <BotonLibro
+            top="24%"
+            left="19%"
+            onClick={() => setLeccionActiva(1)}
+          />
+          <BotonLibro
+            top="33%"
+            left="39%"
+            onClick={() => setLeccionActiva(2)}
+          />
+          <BotonLibro
+            top="25%"
+            left="53%"
+            onClick={() => setLeccionActiva(3)}
+          />
+          <BotonLibro
+            top="24%"
+            left="75%"
+            onClick={() => setLeccionActiva(4)}
+          />
+
+          {/* fila inferior */}
+          <BotonLibro
+            top="62%"
+            left="20%"
+            onClick={() => setLeccionActiva(5)}
+          />
+          <BotonLibro
+            top="65%"
+            left="52%"
+            onClick={() => setLeccionActiva(6)}
+          />
+          <BotonLibro
+            top="67%"
+            left="74%"
+            onClick={() => setLeccionActiva(7)}
+          />
+        </>
+      )}
+
+      {leccionSeleccionada && (
+        <TarjetaLeccion
+          nombre={leccionSeleccionada.nombre}
+          descripcion={leccionSeleccionada.descripcion}
+          imagen={leccionSeleccionada.imagen}
+          puntos={leccionSeleccionada.puntos}
+          onClose={() => setLeccionActiva(null)}
+        />
+      )}
     </div>
   );
 }
