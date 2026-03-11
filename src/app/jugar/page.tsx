@@ -577,14 +577,73 @@ function CarruselBiblioteca({ onBack }: { onBack: () => void }) {
   const imagenes = ["/biblioteca1.png", "/biblioteca2.png", "/biblioteca3.png"];
   const niveles = ["Nivel básico", "Nivel intermedio", "Nivel avanzado"];
   const [indice, setIndice] = useState(0);
+  const [leccionActiva, setLeccionActiva] = useState<number | null>(null);
+
+  const lecciones = [
+    {
+      id: 1,
+      nombre: "Ordena las letras",
+      descripcion:
+        "Forma palabras sencillas colocando las letras en el orden correcto.",
+      imagen: "/leccion1.png",
+      puntos: 50,
+    },
+    {
+      id: 2,
+      nombre: "Palabras que riman",
+      descripcion:
+        "Encuentra las palabras que suenan parecido y completa el reto.",
+      imagen: "/leccion2.png",
+      puntos: 60,
+    },
+    {
+      id: 3,
+      nombre: "Completa la oración",
+      descripcion:
+        "Elige la palabra correcta para terminar cada oración.",
+      imagen: "/leccion3.png",
+      puntos: 70,
+    },
+    {
+      id: 4,
+      nombre: "Detective de historias",
+      descripcion:
+        "Descubre qué ocurrió primero, después y al final de la historia.",
+      imagen: "/leccion4.png",
+      puntos: 80,
+    },
+    {
+      id: 5,
+      nombre: "Encuentra el personaje",
+      descripcion:
+        "Lee con atención y relaciona cada personaje con su descripción.",
+      imagen: "/leccion5.png",
+      puntos: 90,
+    },
+    {
+      id: 6,
+      nombre: "Idea principal",
+      descripcion:
+        "Lee un texto corto y selecciona la idea más importante.",
+      imagen: "/leccion6.png",
+      puntos: 100,
+    },
+  ];
 
   function siguiente() {
     setIndice((prev) => (prev + 1) % imagenes.length);
+    setLeccionActiva(null);
   }
 
   function anterior() {
     setIndice((prev) => (prev - 1 + imagenes.length) % imagenes.length);
+    setLeccionActiva(null);
   }
+
+  const leccionSeleccionada =
+    leccionActiva !== null
+      ? lecciones.find((item) => item.id === leccionActiva)
+      : null;
 
   return (
     <div className="relative h-[95vh] w-full overflow-hidden">
@@ -681,6 +740,214 @@ function CarruselBiblioteca({ onBack }: { onBack: () => void }) {
         }}
       >
         ›
+      </button>
+
+{indice === 0 && (
+  <>
+    {/* fila superior */}
+    <BotonLibro top="33%" left="78%" onClick={() => setLeccionActiva(1)} />
+    <BotonLibro top="33%" left="86%" onClick={() => setLeccionActiva(2)} />
+    <BotonLibro top="33%" left="94%" onClick={() => setLeccionActiva(3)} />
+
+    {/* fila inferior */}
+    <BotonLibro top="63%" left="78%" onClick={() => setLeccionActiva(4)} />
+    <BotonLibro top="63%" left="86%" onClick={() => setLeccionActiva(5)} />
+    <BotonLibro top="63%" left="94%" onClick={() => setLeccionActiva(6)} />
+  </>
+)}
+
+      {leccionSeleccionada && (
+        <TarjetaLeccion
+          nombre={leccionSeleccionada.nombre}
+          descripcion={leccionSeleccionada.descripcion}
+          imagen={leccionSeleccionada.imagen}
+          puntos={leccionSeleccionada.puntos}
+          onClose={() => setLeccionActiva(null)}
+        />
+      )}
+    </div>
+  );
+}
+
+function BotonLibro({
+  top,
+  left,
+  onClick,
+}: {
+  top: string;
+  left: string;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      aria-label="Abrir lección"
+      style={{
+        position: "absolute",
+        top,
+        left,
+        transform: "translate(-50%, -50%)",
+        width: "26px",
+        height: "26px",
+        borderRadius: "999px",
+        border: "2px solid rgba(255,255,255,0.85)",
+        background:
+          "radial-gradient(circle, #ffffff 0%, #e9d5ff 40%, #8b5cf6 100%)",
+        boxShadow:
+          "0 0 10px rgba(139,92,246,0.9), 0 0 22px rgba(139,92,246,0.6), 0 0 40px rgba(255,255,255,0.45)",
+        animation: "portalPulse 2.2s ease-in-out infinite",
+        cursor: "pointer",
+        zIndex: 25,
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = "translate(-50%, -50%) scale(1.2)";
+        e.currentTarget.style.boxShadow =
+          "0 0 16px rgba(139,92,246,1), 0 0 30px rgba(139,92,246,0.85), 0 0 50px rgba(255,255,255,0.6)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = "translate(-50%, -50%) scale(1)";
+        e.currentTarget.style.boxShadow =
+          "0 0 10px rgba(139,92,246,0.9), 0 0 22px rgba(139,92,246,0.6), 0 0 40px rgba(255,255,255,0.45)";
+      }}
+    />
+  );
+}
+
+function TarjetaLeccion({
+  nombre,
+  descripcion,
+  imagen,
+  puntos,
+  onClose,
+}: {
+  nombre: string;
+  descripcion: string;
+  imagen: string;
+  puntos: number;
+  onClose: () => void;
+}) {
+  return (
+    <div
+      style={{
+        position: "absolute",
+        top: "14%",
+        left: "12%",
+        width: "360px",
+        background: "rgba(255,255,255,0.18)",
+        border: "1px solid rgba(255,255,255,0.22)",
+        borderRadius: "28px",
+        padding: "22px",
+        backdropFilter: "blur(12px)",
+        boxShadow: "0 12px 30px rgba(0,0,0,0.18)",
+        zIndex: 40,
+      }}
+    >
+      <button
+        onClick={onClose}
+        aria-label="Cerrar"
+        style={{
+          position: "absolute",
+          top: "14px",
+          right: "14px",
+          width: "36px",
+          height: "36px",
+          borderRadius: "999px",
+          border: "none",
+          background: "rgba(255,255,255,0.22)",
+          color: "white",
+          fontSize: "20px",
+          fontWeight: 700,
+          cursor: "pointer",
+        }}
+      >
+        ×
+      </button>
+
+      <p
+        style={{
+          color: "rgba(255,255,255,0.82)",
+          fontSize: "13px",
+          fontWeight: 700,
+          letterSpacing: "0.08em",
+          textTransform: "uppercase",
+          marginBottom: "8px",
+        }}
+      >
+        Lección disponible
+      </p>
+
+      <h3
+        style={{
+          color: "white",
+          fontSize: "28px",
+          fontWeight: 700,
+          lineHeight: 1.1,
+          marginBottom: "12px",
+          paddingRight: "30px",
+        }}
+      >
+        {nombre}
+      </h3>
+
+      <p
+        style={{
+          color: "rgba(255,255,255,0.9)",
+          fontSize: "16px",
+          lineHeight: 1.5,
+          marginBottom: "18px",
+        }}
+      >
+        {descripcion}
+      </p>
+
+      <div
+        style={{
+          position: "relative",
+          width: "100%",
+          height: "180px",
+          borderRadius: "20px",
+          overflow: "hidden",
+          marginBottom: "18px",
+          border: "1px solid rgba(255,255,255,0.2)",
+        }}
+      >
+        <Image src={imagen} alt={nombre} fill className="object-cover" />
+      </div>
+
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginBottom: "20px",
+        }}
+      >
+        <span
+          style={{
+            color: "white",
+            fontSize: "16px",
+            fontWeight: 600,
+          }}
+        >
+          ⭐ {puntos} puntos
+        </span>
+      </div>
+
+      <button
+        style={{
+          width: "100%",
+          background: "linear-gradient(90deg, #c084fc, #6d28d9)",
+          color: "white",
+          padding: "16px 24px",
+          borderRadius: "999px",
+          border: "none",
+          fontSize: "16px",
+          fontWeight: 700,
+          cursor: "pointer",
+          boxShadow: "0 10px 24px rgba(0,0,0,0.18)",
+        }}
+      >
+        Aprender
       </button>
     </div>
   );
