@@ -17,10 +17,58 @@ export default function JugarPage() {
   const [screen, setScreen] = useState<Screen>("inicio");
   const [nombre, setNombre] = useState("");
   const [codigo, setCodigo] = useState("");
+  const [nivel, setNivel] = useState("Básico");
+  const [mostrarPerfil, setMostrarPerfil] = useState(false);
+  const [puntos, setPuntos] = useState(120);
+  const [leccionesCompletadas, setLeccionesCompletadas] = useState(3);
+  const [mundosExplorados, setMundosExplorados] = useState(2);
 
   return (
     <div className="min-h-[85vh] w-full rounded-[28px] border border-black/10 bg-[#fff8ee] p-4 shadow-sm md:p-6">
-      <div className="mx-auto flex min-h-[95vh] max-w-6xl items-center justify-center overflow-hidden rounded-[28px] border border-black/10 bg-white shadow-lg">
+      <div className="relative mx-auto flex min-h-[95vh] max-w-6xl items-center justify-center overflow-hidden rounded-[28px] border border-black/10 bg-white shadow-lg">
+
+                    {screen !== "inicio" &&
+          screen !== "bienvenida" &&
+          screen !== "formularioNombre" &&
+          screen !== "formularioCodigo" && (
+            <>
+              <button
+                onClick={() => setMostrarPerfil(true)}
+                style={{
+                  position: "absolute",
+                  top: "20px",
+                  right: "20px",
+                  zIndex: 60,
+                  background: "rgba(255,255,255,0.78)",
+                  border: "1px solid rgba(255,255,255,0.25)",
+                  borderRadius: "999px",
+                  padding: "12px 18px",
+                  cursor: "pointer",
+                  fontWeight: 700,
+                  color: "#2b2b2b",
+                  backdropFilter: "blur(8px)",
+                  boxShadow: "0 8px 22px rgba(0,0,0,0.15)",
+                }}
+              >
+                Perfil
+              </button>
+
+              {mostrarPerfil && (
+                <TarjetaPerfil
+                  nombre={nombre}
+                  nivel={nivel}
+                  codigo={codigo}
+                  puntos={puntos}
+                  leccionesCompletadas={leccionesCompletadas}
+                  mundosExplorados={mundosExplorados}
+                  onClose={() => setMostrarPerfil(false)}
+                />
+              )
+              }
+              
+              
+            </>
+          )}
         {screen === "inicio" && (
           <PantallaInicio onStart={() => setScreen("bienvenida")} />
         )}
@@ -69,6 +117,8 @@ export default function JugarPage() {
         )}
       </div>
 
+
+
       <style jsx global>{`
         @keyframes pulseMagic {
           0% {
@@ -101,6 +151,8 @@ export default function JugarPage() {
         }
       `}</style>
     </div>
+
+  
   );
 }
 
@@ -837,7 +889,7 @@ function TarjetaLeccion({
         border: "1px solid rgba(255,255,255,0.22)",
         borderRadius: "28px",
         padding: "22px",
-        backdropFilter: "blur(12px)",
+        backdropFilter: "blur(4px)",
         boxShadow: "0 12px 30px rgba(0,0,0,0.18)",
         zIndex: 40,
       }}
@@ -1380,6 +1432,184 @@ function CarruselGaleria({ onBack }: { onBack: () => void }) {
           onClose={() => setLeccionActiva(null)}
         />
       )}
+    </div>
+  );
+}
+
+function TarjetaPerfil({
+  nombre,
+  nivel,
+  codigo,
+  puntos,
+  leccionesCompletadas,
+  mundosExplorados,
+  onClose,
+}: {
+  nombre: string;
+  nivel: string;
+  codigo: string;
+  puntos: number;
+  leccionesCompletadas: number;
+  mundosExplorados: number;
+  onClose: () => void;
+}
+
+
+)
+ {
+  
+  return (
+    <div
+      style={{
+        position: "absolute",
+        top: "80px",
+        right: "20px",
+        width: "360px",
+        background: "rgba(255,255,255,0.18)",
+        border: "1px solid rgba(255,255,255,0.22)",
+        borderRadius: "28px",
+        padding: "22px",
+        backdropFilter: "blur(8px)",
+        boxShadow: "0 12px 30px rgba(0,0,0,0.18)",
+        zIndex: 70,
+      }}
+    >
+      <button
+        onClick={onClose}
+        aria-label="Cerrar perfil"
+        style={{
+          position: "absolute",
+          top: "14px",
+          right: "14px",
+          width: "36px",
+          height: "36px",
+          borderRadius: "999px",
+          border: "none",
+          background: "rgba(255,255,255,0.22)",
+          color: "white",
+          fontSize: "20px",
+          fontWeight: 700,
+          cursor: "pointer",
+        }}
+      >
+        ×
+      </button>
+
+      <p
+        style={{
+          color: "rgba(255,255,255,0.82)",
+          fontSize: "13px",
+          fontWeight: 700,
+          letterSpacing: "0.08em",
+          textTransform: "uppercase",
+          marginBottom: "8px",
+        }}
+      >
+        Perfil del explorador
+      </p>
+
+      <h3
+        style={{
+          color: "white",
+          fontSize: "28px",
+          fontWeight: 700,
+          lineHeight: 1.1,
+          marginBottom: "18px",
+          paddingRight: "30px",
+        }}
+      >
+        {nombre || "Explorador"}
+      </h3>
+
+      <div
+        style={{
+          display: "grid",
+          gap: "12px",
+          marginBottom: "18px",
+        }}
+      >
+        <InfoFila etiqueta="Nivel" valor={nivel} />
+        <InfoFila etiqueta="Código" valor={codigo || "Demo"} />
+      </div>
+
+      <div
+        style={{
+          marginTop: "8px",
+          padding: "16px",
+          borderRadius: "20px",
+          background: "rgba(255,255,255,0.12)",
+          border: "1px solid rgba(255,255,255,0.12)",
+        }}
+      >
+        <p
+          style={{
+            color: "white",
+            fontSize: "16px",
+            fontWeight: 700,
+            marginBottom: "12px",
+          }}
+        >
+          Estadísticas
+        </p>
+
+        <div style={{ display: "grid", gap: "10px" }}>
+          <StatFila icono="⭐" texto={`Puntos acumulados: ${puntos}`} />
+          <StatFila
+            icono="📚"
+            texto={`Lecciones completadas: ${leccionesCompletadas}`}
+          />
+          <StatFila
+            icono="🌍"
+            texto={`Mundos explorados: ${mundosExplorados}`}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function InfoFila({
+  etiqueta,
+  valor,
+}: {
+  etiqueta: string;
+  valor: string;
+}) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        gap: "12px",
+        padding: "10px 14px",
+        borderRadius: "16px",
+        background: "rgba(255,255,255,0.12)",
+      }}
+    >
+      <span style={{ color: "rgba(255,255,255,0.78)", fontWeight: 600 }}>
+        {etiqueta}
+      </span>
+      <span style={{ color: "white", fontWeight: 700 }}>{valor}</span>
+    </div>
+  );
+}
+
+function StatFila({
+  icono,
+  texto,
+}: {
+  icono: string;
+  texto: string;
+}) {
+  return (
+    <div
+      style={{
+        color: "rgba(255,255,255,0.92)",
+        fontSize: "15px",
+        fontWeight: 600,
+      }}
+    >
+      {icono} {texto}
     </div>
   );
 }
