@@ -24,9 +24,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <Link className="block rounded-xl px-3 py-2 bg-white/5 ring-1 ring-white/10 hover:bg-white/10" href="/admin/gestion">
                 Gestión
               </Link>
-              <Link className="block rounded-xl px-3 py-2 bg-white/5 ring-1 ring-white/10 hover:bg-white/10" href="/admin/bd">
+              {/* <Link className="block rounded-xl px-3 py-2 bg-white/5 ring-1 ring-white/10 hover:bg-white/10" href="/admin/bd">
                 Acceso a BD
-              </Link>
+              </Link> */}
             </div>
 
             <div className="mt-6 h-px w-full bg-white/10" />
